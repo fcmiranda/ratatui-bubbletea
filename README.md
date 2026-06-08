@@ -10,6 +10,13 @@ This project does **not** replace ratatui's renderer. Existing ratatui apps can 
 - `ratatui-bubbletea-components`: Bubbles-inspired components implemented as ratatui widgets/stateful widgets.
 - `ratatui-tea`: optional app-loop shell for `Model` / `Msg` / `Cmd` style apps.
 
+## Usage documentation
+
+- [Use in an existing ratatui app](docs/usage-existing-ratatui.md): keep your current event loop and adopt the theme/components incrementally.
+- [Start a new app with optional `ratatui-tea`](docs/usage-new-tea-app.md): organize a new app around `Model` / `Msg` / `Cmd` while still rendering with ratatui.
+- [Implementation status](docs/status.md): what is implemented and what follow-ups remain.
+- [Milestone plan](docs/milestones.md): milestone-by-milestone development checklist.
+
 ## Plain ratatui usage
 
 ```rust
@@ -68,4 +75,4 @@ let mut program = Program::new(App { count: 0 });
 program.send(Msg::Increment);
 ```
 
-See [`docs/milestones.md`](docs/milestones.md) and [`docs/status.md`](docs/status.md) for the implementation plan and current status.
+For more detail, start with [the existing-app guide](docs/usage-existing-ratatui.md) or [the new `ratatui-tea` app guide](docs/usage-new-tea-app.md).
