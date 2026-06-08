@@ -5,6 +5,8 @@
 
 use std::collections::VecDeque;
 use std::sync::mpsc::{self, Receiver, SendError, Sender};
+use std::thread;
+use std::time::{Duration, Instant};
 
 use ratatui::backend::Backend;
 use ratatui::{CompletedFrame, Frame, Terminal};
@@ -31,25 +33,38 @@ pub trait Model {
 /// Async work, timers, and one-shot ticks belong to the next milestone. This
 /// type already models the command boundary so app code does not need to change
 /// when richer command executors arrive.
-#[derive(Debug, Clone, Eq, PartialEq, Hash)]
 pub struct Cmd<M> {
-    messages: Vec<M>,
+    tasks: Vec<Task<M>>,
+}
+
+type BoxedTask<M> = Box<dyn FnOnce() -> M + Send>;
+
+enum Task<M> {
+    Message(M),
+    Once(BoxedTask<M>),
+    Tick(Duration, Box<dyn FnOnce(Instant) -> M + Send>),
 }
 
 impl<M> Cmd<M> {
     /// Creates a command with no messages.
     #[must_use]
     pub const fn none() -> Self {
-        Self {
-            messages: Vec::new(),
-        }
+        Self { tasks: Vec::new() }
     }
 
     /// Creates a command that emits one message.
     #[must_use]
     pub fn message(message: M) -> Self {
         Self {
-            messages: vec![message],
+            tasks: vec![Task::Message(message)],
+        }
+    }
+
+    /// Creates a command that runs a synchronous task and emits its message.
+    #[must_use]
+    pub fn once(task: impl FnOnce() -> M + Send + 'static) -> Self {
+        Self {
+            tasks: vec![Task::Once(Box::new(task))],
         }
     }
 
@@ -57,23 +72,53 @@ impl<M> Cmd<M> {
     #[must_use]
     pub fn batch(commands: impl IntoIterator<Item = Self>) -> Self {
         Self {
-            messages: commands
+            tasks: commands
                 .into_iter()
-                .flat_map(|command| command.messages)
+                .flat_map(|command| command.tasks)
                 .collect(),
+        }
+    }
+
+    /// Sequences commands in order.
+    ///
+    /// The MVP executor is synchronous, so this has the same execution behavior
+    /// as [`Cmd::batch`] for now while preserving the public concept.
+    #[must_use]
+    pub fn sequence(commands: impl IntoIterator<Item = Self>) -> Self {
+        Self::batch(commands)
+    }
+
+    /// Creates a one-shot timer command.
+    ///
+    /// This MVP implementation sleeps on the current executor thread. A future
+    /// async executor can keep the same API and move the wait off-thread.
+    #[must_use]
+    pub fn tick(duration: Duration, task: impl FnOnce(Instant) -> M + Send + 'static) -> Self {
+        Self {
+            tasks: vec![Task::Tick(duration, Box::new(task))],
         }
     }
 
     /// Returns whether the command contains no messages.
     #[must_use]
     pub fn is_empty(&self) -> bool {
-        self.messages.is_empty()
+        self.tasks.is_empty()
     }
 
-    /// Consumes the command and returns its messages.
+    /// Consumes the command, executes its tasks, and returns produced messages.
     #[must_use]
     pub fn into_messages(self) -> Vec<M> {
-        self.messages
+        self.tasks
+            .into_iter()
+            .map(|task| match task {
+                Task::Message(message) => message,
+                Task::Once(task) => task(),
+                Task::Tick(duration, task) => {
+                    thread::sleep(duration);
+                    task(Instant::now())
+                }
+            })
+            .collect()
     }
 }
 
@@ -221,6 +266,20 @@ mod tests {
         let command = Cmd::batch([Cmd::message(1), Cmd::message(2), Cmd::none()]);
 
         assert_eq!(command.into_messages(), vec![1, 2]);
+    }
+
+    #[test]
+    fn command_sequence_preserves_order() {
+        let command = Cmd::sequence([Cmd::message(1), Cmd::once(|| 2), Cmd::message(3)]);
+
+        assert_eq!(command.into_messages(), vec![1, 2, 3]);
+    }
+
+    #[test]
+    fn command_tick_emits_message() {
+        let command = Cmd::tick(std::time::Duration::ZERO, |_| 42);
+
+        assert_eq!(command.into_messages(), vec![42]);
     }
 
     #[test]
