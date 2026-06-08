@@ -62,19 +62,32 @@ jobs:
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: |
-          if cargo search ratatui-bubbletea-theme --limit 5 | grep -q '^ratatui-bubbletea-theme = "0.1.0"'; then
-            echo "ratatui-bubbletea-theme 0.1.0 is already published; skipping."
-          else
-            cargo publish -p ratatui-bubbletea-theme
-          fi
+          publish_crate() {
+            local crate="$1"
+            set +e
+            output=$(cargo publish -p "$crate" 2>&1)
+            status=$?
+            set -e
+            echo "$output"
+            if [ "$status" -ne 0 ]; then
+              if echo "$output" | grep -q "already exists on crates.io index"; then
+                echo "$crate 0.1.0 is already published; skipping."
+              else
+                exit "$status"
+              fi
+            fi
+          }
+
+          publish_crate ratatui-bubbletea-theme
 
       - name: Wait for theme crate indexing
         if: ${{ github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') }}
         run: |
           for attempt in {1..40}; do
-            if cargo search ratatui-bubbletea-theme --limit 1 | grep -q '^ratatui-bubbletea-theme = "0.1.0"'; then
+            if cargo package --no-verify -p ratatui-bubbletea-components >/tmp/ratatui-bubbletea-package.log 2>&1; then
               exit 0
             fi
+            cat /tmp/ratatui-bubbletea-package.log
             echo "Waiting for crates.io index update ($attempt/40)..."
             sleep 15
           done
@@ -86,19 +99,43 @@ jobs:
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: |
-          if cargo search ratatui-bubbletea-components --limit 5 | grep -q '^ratatui-bubbletea-components = "0.1.0"'; then
-            echo "ratatui-bubbletea-components 0.1.0 is already published; skipping."
-          else
-            cargo publish -p ratatui-bubbletea-components
-          fi
+          publish_crate() {
+            local crate="$1"
+            set +e
+            output=$(cargo publish -p "$crate" 2>&1)
+            status=$?
+            set -e
+            echo "$output"
+            if [ "$status" -ne 0 ]; then
+              if echo "$output" | grep -q "already exists on crates.io index"; then
+                echo "$crate 0.1.0 is already published; skipping."
+              else
+                exit "$status"
+              fi
+            fi
+          }
+
+          publish_crate ratatui-bubbletea-components
 
       - name: Publish ratatui-tea
         if: ${{ github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') }}
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
         run: |
-          if cargo search ratatui-tea --limit 5 | grep -q '^ratatui-tea = "0.1.0"'; then
-            echo "ratatui-tea 0.1.0 is already published; skipping."
-          else
-            cargo publish -p ratatui-tea
-          fi
+          publish_crate() {
+            local crate="$1"
+            set +e
+            output=$(cargo publish -p "$crate" 2>&1)
+            status=$?
+            set -e
+            echo "$output"
+            if [ "$status" -ne 0 ]; then
+              if echo "$output" | grep -q "already exists on crates.io index"; then
+                echo "$crate 0.1.0 is already published; skipping."
+              else
+                exit "$status"
+              fi
+            fi
+          }
+
+          publish_crate ratatui-tea
