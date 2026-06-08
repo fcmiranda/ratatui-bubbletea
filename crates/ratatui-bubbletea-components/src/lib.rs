@@ -10,6 +10,7 @@ mod progress;
 mod spinner;
 mod table;
 mod text_input;
+mod viewport;
 
 pub use help::{Help, HelpMode};
 pub use key::{KeyBinding, KeyMap};
@@ -18,3 +19,4 @@ pub use progress::{Progress, ProgressSymbols};
 pub use spinner::{Spinner, SpinnerFrames, SpinnerState};
 pub use table::ThemedTable;
 pub use text_input::{TextInput, TextInputState};
+pub use viewport::{Viewport, ViewportState};
