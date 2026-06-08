@@ -17,8 +17,8 @@ keywords = ["ratatui", "tui", "terminal", "bubbletea", "theme"]
 categories = ["command-line-interface"]
 
 [workspace.dependencies]
-ratatui = { version = "0.30.1", path = "../ratatui/ratatui", default-features = false }
-ratatui-bubbletea-theme = { path = "crates/ratatui-bubbletea-theme" }
+ratatui = { version = "0.30.1", default-features = false }
+ratatui-bubbletea-theme = { version = "0.1.0", path = "crates/ratatui-bubbletea-theme" }
 
 [workspace.lints.rust]
 unsafe_code = "forbid"
