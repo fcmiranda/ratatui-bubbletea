@@ -44,6 +44,8 @@ ratatui-bubbletea-components = { path = "../ratatui-bubbletea/crates/ratatui-bub
 ratatui-tea = { path = "../ratatui-bubbletea/crates/ratatui-tea" }
 ```
 
+Compatibility: these crates currently target `ratatui 0.30.x`. Keep your app's ratatui dependency on the same 0.30 line. If you use crossterm through ratatui, prefer `ratatui::crossterm` over a separate `crossterm` dependency.
+
 ## 2. Define model and messages
 
 ```rust
@@ -106,7 +108,7 @@ impl Model for App {
         let area = frame.area();
 
         frame.render_widget(
-            self.theme.block_with_focus(true).title("Counter"),
+            self.theme.titled_block("Counter"),
             area,
         );
 

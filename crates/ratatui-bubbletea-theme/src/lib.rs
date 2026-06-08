@@ -62,19 +62,28 @@ pub struct Palette {
     pub selected_background: Color,
 }
 
+impl Palette {
+    /// Default Charm-inspired palette.
+    ///
+    /// This is exposed as a constant so applications can reuse color tokens in
+    /// their own `const` style tables, match arms, and module-level defaults
+    /// without duplicating RGB literals.
+    pub const CHARM: Self = Self {
+        foreground: Color::Rgb(230, 230, 230),
+        muted: Color::Rgb(122, 122, 122),
+        accent: Color::Rgb(255, 117, 191),
+        success: Color::Rgb(4, 211, 97),
+        warning: Color::Rgb(255, 193, 7),
+        error: Color::Rgb(255, 83, 112),
+        border: Color::Rgb(92, 92, 92),
+        focused_border: Color::Rgb(123, 201, 255),
+        selected_background: Color::Rgb(48, 48, 48),
+    };
+}
+
 impl Default for Palette {
     fn default() -> Self {
-        Self {
-            foreground: Color::Rgb(230, 230, 230),
-            muted: Color::Rgb(122, 122, 122),
-            accent: Color::Rgb(255, 117, 191),
-            success: Color::Rgb(4, 211, 97),
-            warning: Color::Rgb(255, 193, 7),
-            error: Color::Rgb(255, 83, 112),
-            border: Color::Rgb(92, 92, 92),
-            focused_border: Color::Rgb(123, 201, 255),
-            selected_background: Color::Rgb(48, 48, 48),
-        }
+        Self::CHARM
     }
 }
 
@@ -154,6 +163,32 @@ impl Theme {
                 self.border
             })
             .title_style(self.title)
+    }
+
+    /// Creates a rounded, titled block using the theme's default title style.
+    #[must_use]
+    pub fn titled_block<'a, T>(&self, title: T) -> Block<'a>
+    where
+        T: Into<Line<'a>>,
+    {
+        self.block().title(title)
+    }
+
+    /// Creates a modal-style block with the focused/accent border style.
+    ///
+    /// This is intended for the common `Clear` + centered-popup pattern.
+    #[must_use]
+    pub fn modal_block<'a>(&self) -> Block<'a> {
+        self.block_with_focus(true)
+    }
+
+    /// Creates a titled modal-style block with the focused/accent border style.
+    #[must_use]
+    pub fn titled_modal_block<'a, T>(&self, title: T) -> Block<'a>
+    where
+        T: Into<Line<'a>>,
+    {
+        self.modal_block().title(title)
     }
 
     /// Creates a paragraph using the theme's normal text style.
@@ -336,6 +371,14 @@ mod tests {
     }
 
     #[test]
+    fn default_palette_is_charm_const() {
+        const ACCENT: Color = Palette::CHARM.accent;
+
+        assert_eq!(Palette::default(), Palette::CHARM);
+        assert_eq!(ACCENT, Color::Rgb(255, 117, 191));
+    }
+
+    #[test]
     fn custom_palette_is_reflected_in_styles() {
         let palette = Palette {
             foreground: Color::White,
@@ -413,6 +456,41 @@ mod tests {
             terminal.backend().buffer()[(0, 0)].fg,
             theme.palette.focused_border
         );
+
+        Ok(())
+    }
+
+    #[test]
+    fn titled_block_applies_title_style() -> Result<(), Box<dyn std::error::Error>> {
+        let theme = Theme::default();
+        let backend = TestBackend::new(12, 3);
+        let mut terminal = Terminal::new(backend)?;
+
+        terminal.draw(|frame| {
+            frame.render_widget(theme.titled_block("Demo"), frame.area());
+        })?;
+
+        let buffer = terminal.backend().buffer();
+        assert_eq!(buffer[(1, 0)].symbol(), "D");
+        assert_eq!(buffer[(1, 0)].fg, theme.palette.accent);
+        assert!(buffer[(1, 0)].modifier.contains(Modifier::BOLD));
+
+        Ok(())
+    }
+
+    #[test]
+    fn modal_block_uses_focused_border_style() -> Result<(), Box<dyn std::error::Error>> {
+        let theme = Theme::default();
+        let backend = TestBackend::new(12, 3);
+        let mut terminal = Terminal::new(backend)?;
+
+        terminal.draw(|frame| {
+            frame.render_widget(theme.titled_modal_block("Edit"), frame.area());
+        })?;
+
+        let buffer = terminal.backend().buffer();
+        assert_eq!(buffer[(0, 0)].fg, theme.palette.focused_border);
+        assert_eq!(buffer[(1, 0)].symbol(), "E");
 
         Ok(())
     }

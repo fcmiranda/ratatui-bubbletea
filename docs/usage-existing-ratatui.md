@@ -17,12 +17,26 @@ ratatui-bubbletea-components = { path = "../ratatui-bubbletea/crates/ratatui-bub
 
 If your app already depends on ratatui, keep your existing ratatui dependency and add only the two `ratatui-bubbletea-*` crates. Once published, replace the path dependencies with version numbers.
 
+## Compatibility note
+
+`ratatui-bubbletea` currently targets `ratatui 0.30.x`. Ratatui's `Style`, `Color`, `Block`, `Line`, and `Span` types must come from the same ratatui version across your app and these crates. If your app is still on `ratatui 0.29`, upgrade ratatui first.
+
+If your app uses crossterm events/backend through ratatui, prefer ratatui's re-export:
+
+```rust
+use ratatui::crossterm;
+```
+
+instead of adding a separate `crossterm` dependency with a potentially different version.
+
 ## 2. Create a theme once
 
 Store the theme in your app state or create it in your render function.
 
 ```rust
 use ratatui_bubbletea_theme::BubbleTheme;
+
+const ACCENT: ratatui::style::Color = ratatui_bubbletea_theme::Palette::CHARM.accent;
 
 struct App {
     theme: BubbleTheme,
@@ -49,9 +63,7 @@ fn render(app: &App, frame: &mut ratatui::Frame<'_>) {
     let inner = area.inner(Margin::new(2, 1));
 
     frame.render_widget(
-        app.theme
-            .block_with_focus(true)
-            .title(app.theme.title("Dashboard")),
+        app.theme.titled_block("Dashboard"),
         area,
     );
 
@@ -60,6 +72,12 @@ fn render(app: &App, frame: &mut ratatui::Frame<'_>) {
         inner,
     );
 }
+```
+
+For modal overlays, use the focused/accent border preset:
+
+```rust
+frame.render_widget(app.theme.titled_modal_block("Edit account"), modal_area);
 ```
 
 ## 4. Add components incrementally

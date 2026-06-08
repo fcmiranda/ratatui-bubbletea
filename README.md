@@ -10,6 +10,11 @@ This project does **not** replace ratatui's renderer. Existing ratatui apps can 
 - `ratatui-bubbletea-components`: Bubbles-inspired components implemented as ratatui widgets/stateful widgets.
 - `ratatui-tea`: optional app-loop shell for `Model` / `Msg` / `Cmd` style apps.
 
+## Compatibility
+
+- Requires `ratatui 0.30.x`. Ratatui types such as `Style`, `Color`, `Block`, `Line`, and `Span` are versioned Rust types, so mixing this crate with `ratatui 0.29` in the same app will cause type mismatches.
+- The library itself does not require app code to use a separate `crossterm` dependency. If your app uses ratatui's crossterm backend, prefer ratatui's re-export (`ratatui::crossterm`) so the backend/event types stay aligned with your ratatui version.
+
 ## Usage documentation
 
 - [Use in an existing ratatui app](docs/usage-existing-ratatui.md): keep your current event loop and adopt the theme/components incrementally.
@@ -24,9 +29,11 @@ use ratatui_bubbletea_theme::BubbleTheme;
 
 let theme = BubbleTheme::default();
 
+const ACCENT: ratatui::style::Color = ratatui_bubbletea_theme::Palette::CHARM.accent;
+
 terminal.draw(|frame| {
     frame.render_widget(
-        theme.block_with_focus(true).title("Demo"),
+        theme.titled_block("Demo"),
         frame.area(),
     );
 })?;
