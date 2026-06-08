@@ -61,16 +61,21 @@ jobs:
         if: ${{ github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') }}
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-        run: cargo publish -p ratatui-bubbletea-theme
+        run: |
+          if cargo search ratatui-bubbletea-theme --limit 5 | grep -q '^ratatui-bubbletea-theme = "0.1.0"'; then
+            echo "ratatui-bubbletea-theme 0.1.0 is already published; skipping."
+          else
+            cargo publish -p ratatui-bubbletea-theme
+          fi
 
       - name: Wait for theme crate indexing
         if: ${{ github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') }}
         run: |
-          for attempt in {1..20}; do
+          for attempt in {1..40}; do
             if cargo search ratatui-bubbletea-theme --limit 1 | grep -q '^ratatui-bubbletea-theme = "0.1.0"'; then
               exit 0
             fi
-            echo "Waiting for crates.io index update ($attempt/20)..."
+            echo "Waiting for crates.io index update ($attempt/40)..."
             sleep 15
           done
           echo "ratatui-bubbletea-theme 0.1.0 was not visible in the crates.io index in time" >&2
@@ -80,10 +85,20 @@ jobs:
         if: ${{ github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') }}
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-        run: cargo publish -p ratatui-bubbletea-components
+        run: |
+          if cargo search ratatui-bubbletea-components --limit 5 | grep -q '^ratatui-bubbletea-components = "0.1.0"'; then
+            echo "ratatui-bubbletea-components 0.1.0 is already published; skipping."
+          else
+            cargo publish -p ratatui-bubbletea-components
+          fi
 
       - name: Publish ratatui-tea
         if: ${{ github.event_name == 'release' || (github.event_name == 'workflow_dispatch' && inputs.dry_run == 'false') }}
         env:
           CARGO_REGISTRY_TOKEN: ${{ secrets.CARGO_REGISTRY_TOKEN }}
-        run: cargo publish -p ratatui-tea
+        run: |
+          if cargo search ratatui-tea --limit 5 | grep -q '^ratatui-tea = "0.1.0"'; then
+            echo "ratatui-tea 0.1.0 is already published; skipping."
+          else
+            cargo publish -p ratatui-tea
+          fi
