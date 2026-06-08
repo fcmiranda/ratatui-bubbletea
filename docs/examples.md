@@ -2,7 +2,7 @@
 
 This repository includes Rust examples that recreate the parts of Charm's Bubble Tea example catalog that map to the current API surface.
 
-The examples intentionally render through ratatui widgets. Most use `TestBackend` so they are cheap to compile and run in CI; they are source-level showcases rather than full interactive terminal demos. A future terminal lifecycle/event-loop helper can turn these into interactive crossterm examples without changing the component APIs.
+The examples intentionally render through ratatui widgets. Component examples use `TestBackend` so they are cheap to compile and run in CI; they are source-level showcases rather than full interactive terminal demos. The `ratatui-tea` examples use ratatui's crossterm backend and stay open until you quit.
 
 ## Ported examples
 
@@ -17,8 +17,8 @@ The examples intentionally render through ratatui widgets. Most use `TestBackend
 | `examples/textinput` | `bubbletea-textinput` | `ratatui-bubbletea-components` | Focused single-line input and cursor rendering. |
 | `examples/pager` | `bubbletea-pager` | `ratatui-bubbletea-components` | Scrollable viewport with position indicator. |
 | `examples/tabs` | `bubbletea-tabs` | `ratatui-bubbletea-components` | Themed tabs built from ratatui `Line`/`Paragraph`. |
-| `examples/simple` | `bubbletea-simple` | `ratatui-tea` | Minimal `Model` / `Msg` / `Cmd` counter. |
-| `examples/sequence` | `bubbletea-sequence` | `ratatui-tea` | Ordered command execution with `Cmd::sequence`. |
+| `examples/simple` | `bubbletea-simple` | `ratatui-tea` | Interactive `Model` / `Msg` / `Cmd` counter; `↑`/`+`, `↓`/`-`, `q`. |
+| `examples/sequence` | `bubbletea-sequence` | `ratatui-tea` | Interactive ordered command demo; `r` replays, `q` quits. |
 
 ## Run examples
 
@@ -35,6 +35,8 @@ cargo run -p ratatui-bubbletea-components --example bubbletea-tabs
 cargo run -p ratatui-tea --example bubbletea-simple
 cargo run -p ratatui-tea --example bubbletea-sequence
 ```
+
+`bubbletea-simple` and `bubbletea-sequence` enter the alternate screen and wait for keyboard input. Press `q` or Esc to quit.
 
 ## Not ported yet
 
