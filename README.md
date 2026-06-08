@@ -19,6 +19,7 @@ This project does **not** replace ratatui's renderer. Existing ratatui apps can 
 
 - [Use in an existing ratatui app](docs/usage-existing-ratatui.md): keep your current event loop and adopt the theme/components incrementally.
 - [Start a new app with optional `ratatui-tea`](docs/usage-new-tea-app.md): organize a new app around `Model` / `Msg` / `Cmd` while still rendering with ratatui.
+- [Bubble Tea example ports](docs/examples.md): runnable Rust examples that recreate the original Bubble Tea demos supported by the current API surface.
 - [Implementation status](docs/status.md): what is implemented and what follow-ups remain.
 - [Milestone plan](docs/milestones.md): milestone-by-milestone development checklist.
 

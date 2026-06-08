@@ -41,6 +41,17 @@ crates/
   ratatui-tea/
 ```
 
+## Example ports
+
+Current Bubble Tea-inspired example ports are documented in [`docs/examples.md`](examples.md).
+
+Implemented ports:
+
+- components: `bubbletea-help`, `bubbletea-list-simple`, `bubbletea-result`, `bubbletea-progress-static`, `bubbletea-spinner`, `bubbletea-table`, `bubbletea-textinput`, `bubbletea-pager`, `bubbletea-tabs`.
+- tea: `bubbletea-simple`, `bubbletea-sequence`.
+
+These examples use ratatui rendering and mostly target `TestBackend` for CI-friendly compilation. They are not full interactive crossterm apps yet.
+
 ## Implemented components
 
 `ratatui-bubbletea-theme` currently exports:
