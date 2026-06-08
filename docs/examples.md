@@ -2,7 +2,27 @@
 
 This repository includes Rust examples that recreate the parts of Charm's Bubble Tea example catalog that map to the current API surface.
 
-The examples intentionally render through ratatui widgets. Component examples use `TestBackend` so they are cheap to compile and run in CI; they are source-level showcases rather than full interactive terminal demos. The `ratatui-tea` examples use ratatui's crossterm backend and stay open until you quit.
+The examples intentionally render through ratatui widgets. Small component examples use `TestBackend` so they are cheap to compile and run in CI; they are source-level showcases rather than full interactive terminal demos. `bubbletea-showcase` and the `ratatui-tea` examples use ratatui's crossterm backend and stay open until you quit.
+
+## All-components TUI showcase
+
+Run the interactive showcase:
+
+```bash
+cargo run -p ratatui-bubbletea-components --example bubbletea-showcase
+```
+
+Controls:
+
+- `j`/`k` or arrows: move the selected list item.
+- PageDown/Space and PageUp: scroll the viewport.
+- `+`/`-`: adjust progress.
+- `s`: advance spinner once.
+- `t`: toggle spinner frame set.
+- Type regular characters: edit the text input.
+- Backspace/Delete/Left/Right: edit or move inside the input.
+- `h`: toggle compact/expanded help.
+- `q`, Esc, or Ctrl+C: quit.
 
 ## Ported examples
 
@@ -17,6 +37,7 @@ The examples intentionally render through ratatui widgets. Component examples us
 | `examples/textinput` | `bubbletea-textinput` | `ratatui-bubbletea-components` | Focused single-line input and cursor rendering. |
 | `examples/pager` | `bubbletea-pager` | `ratatui-bubbletea-components` | Scrollable viewport with position indicator. |
 | `examples/tabs` | `bubbletea-tabs` | `ratatui-bubbletea-components` | Themed tabs built from ratatui `Line`/`Paragraph`. |
+| combined showcase | `bubbletea-showcase` | `ratatui-bubbletea-components` | Interactive TUI showing theme, key map, help, spinner, progress, list, table, text input, and viewport. |
 | `examples/simple` | `bubbletea-simple` | `ratatui-tea` | Interactive `Model` / `Msg` / `Cmd` counter; `↑`/`+`, `↓`/`-`, `q`. |
 | `examples/sequence` | `bubbletea-sequence` | `ratatui-tea` | Interactive ordered command demo; `r` replays, `q` quits. |
 
@@ -32,11 +53,12 @@ cargo run -p ratatui-bubbletea-components --example bubbletea-table
 cargo run -p ratatui-bubbletea-components --example bubbletea-textinput
 cargo run -p ratatui-bubbletea-components --example bubbletea-pager
 cargo run -p ratatui-bubbletea-components --example bubbletea-tabs
+cargo run -p ratatui-bubbletea-components --example bubbletea-showcase
 cargo run -p ratatui-tea --example bubbletea-simple
 cargo run -p ratatui-tea --example bubbletea-sequence
 ```
 
-`bubbletea-simple` and `bubbletea-sequence` enter the alternate screen and wait for keyboard input. Press `q` or Esc to quit.
+`bubbletea-showcase`, `bubbletea-simple`, and `bubbletea-sequence` enter the alternate screen and wait for keyboard input. Press `q` or Esc to quit.
 
 ## Not ported yet
 

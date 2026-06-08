@@ -47,10 +47,10 @@ Current Bubble Tea-inspired example ports are documented in [`docs/examples.md`]
 
 Implemented ports:
 
-- components: `bubbletea-help`, `bubbletea-list-simple`, `bubbletea-result`, `bubbletea-progress-static`, `bubbletea-spinner`, `bubbletea-table`, `bubbletea-textinput`, `bubbletea-pager`, `bubbletea-tabs`.
+- components: `bubbletea-help`, `bubbletea-list-simple`, `bubbletea-result`, `bubbletea-progress-static`, `bubbletea-spinner`, `bubbletea-table`, `bubbletea-textinput`, `bubbletea-pager`, `bubbletea-tabs`, `bubbletea-showcase`.
 - tea: `bubbletea-simple`, `bubbletea-sequence`.
 
-These examples use ratatui rendering. Component examples target `TestBackend` for CI-friendly compilation. The `ratatui-tea` examples are interactive crossterm apps that quit on `q`/Esc.
+These examples use ratatui rendering. Small component examples target `TestBackend` for CI-friendly compilation. `bubbletea-showcase` and the `ratatui-tea` examples are interactive crossterm apps that quit on `q`/Esc.
 
 ## Implemented components
 

@@ -15,5 +15,8 @@ description = "Bubbles-inspired ratatui components"
 ratatui.workspace = true
 ratatui-bubbletea-theme.workspace = true
 
+[dev-dependencies]
+ratatui = { workspace = true, features = ["crossterm"] }
+
 [lints]
 workspace = true
