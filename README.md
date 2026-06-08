@@ -4,6 +4,8 @@ Charm/Bubble Tea-inspired themes and components for ratatui.
 
 This project does **not** replace ratatui's renderer. Existing ratatui apps can adopt the look incrementally by using theme helpers and ratatui-native components. The optional `ratatui-tea` crate is only for users who also want Bubble Tea-style app-loop ergonomics.
 
+![ratatui-bubbletea showcase](assets/showcase-2026-06-08.png)
+
 ## Crates
 
 - `ratatui-bubbletea-theme`: semantic theme tokens and styled helpers for existing ratatui widgets.
@@ -22,6 +24,44 @@ This project does **not** replace ratatui's renderer. Existing ratatui apps can 
 - [Bubble Tea example ports](docs/examples.md): runnable Rust examples that recreate the original Bubble Tea demos supported by the current API surface.
 - [Implementation status](docs/status.md): what is implemented and what follow-ups remain.
 - [Milestone plan](docs/milestones.md): milestone-by-milestone development checklist.
+
+## Examples
+
+Run the interactive all-components showcase:
+
+```bash
+cargo run -p ratatui-bubbletea-components --example bubbletea-showcase
+```
+
+Showcase controls:
+
+- `j`/`k` or arrows: move list selection.
+- PageDown/Space and PageUp: scroll the viewport.
+- `+`/`-`: adjust progress.
+- `s`: advance spinner once.
+- `t`: toggle spinner style.
+- type regular characters: edit the text input.
+- Backspace/Delete/Left/Right: edit or move inside the input.
+- `h`: toggle compact/expanded help.
+- `q`, Esc, or Ctrl+C: quit.
+
+Other Bubble Tea-inspired example ports:
+
+```bash
+cargo run -p ratatui-bubbletea-components --example bubbletea-help
+cargo run -p ratatui-bubbletea-components --example bubbletea-list-simple
+cargo run -p ratatui-bubbletea-components --example bubbletea-result
+cargo run -p ratatui-bubbletea-components --example bubbletea-progress-static
+cargo run -p ratatui-bubbletea-components --example bubbletea-spinner
+cargo run -p ratatui-bubbletea-components --example bubbletea-table
+cargo run -p ratatui-bubbletea-components --example bubbletea-textinput
+cargo run -p ratatui-bubbletea-components --example bubbletea-pager
+cargo run -p ratatui-bubbletea-components --example bubbletea-tabs
+cargo run -p ratatui-tea --example bubbletea-simple
+cargo run -p ratatui-tea --example bubbletea-sequence
+```
+
+See [docs/examples.md](docs/examples.md) for the Bubble Tea → ratatui-bubbletea mapping and notes about examples that need future components.
 
 ## Plain ratatui usage
 
