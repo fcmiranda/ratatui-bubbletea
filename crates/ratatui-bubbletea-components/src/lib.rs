@@ -5,6 +5,8 @@
 
 mod help;
 mod key;
+mod spinner;
 
 pub use help::{Help, HelpMode};
 pub use key::{KeyBinding, KeyMap};
+pub use spinner::{Spinner, SpinnerFrames, SpinnerState};
