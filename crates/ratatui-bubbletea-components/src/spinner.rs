@@ -13,8 +13,8 @@ pub struct SpinnerFrames {
 
 impl SpinnerFrames {
     /// Braille dot spinner, close to the classic Charm default.
-    pub const DOTS: Self = Self {
-        name: "dots",
+    pub const MINIDOT: Self = Self {
+        name: "minidot",
         frames: &["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
     };
 
@@ -22,6 +22,136 @@ impl SpinnerFrames {
     pub const LINE: Self = Self {
         name: "line",
         frames: &["-", "\\", "|", "/"],
+    };
+
+    /// Braille jump spinner.
+    pub const JUMP: Self = Self {
+        name: "jump",
+        frames: &["⢄", "⢂", "⢁", "⡁", "⡈", "⡐", "⡠"],
+    };
+
+    /// Block pulse spinner.
+    pub const PULSE: Self = Self {
+        name: "pulse",
+        frames: &["█", "▓", "▒", "░"],
+    };
+
+    /// Bouncing points spinner.
+    pub const POINTS: Self = Self {
+        name: "points",
+        frames: &["∙∙∙", "●∙∙", "∙●∙", "∙∙●", "∙∙∙"],
+    };
+
+    /// Progress meter spinner.
+    pub const METER: Self = Self {
+        name: "meter",
+        frames: &["▱▱▱", "▰▱▱", "▰▰▱", "▰▰▰", "▰▰▱", "▰▱▱"],
+    };
+
+    /// Hamburger menu spinner.
+    pub const HAMBURGER: Self = Self {
+        name: "hamburger",
+        frames: &["☱", "☲", "☴", "☲"],
+    };
+
+    /// Ellipsis spinner.
+    pub const ELLIPSIS: Self = Self {
+        name: "ellipsis",
+        frames: &["", ".", "..", "..."],
+    };
+
+    /// Globe spinning.
+    pub const GLOBE: Self = Self {
+        name: "globe",
+        frames: &["🌍", "🌎", "🌏"],
+    };
+
+    /// Moon phases.
+    pub const MOON: Self = Self {
+        name: "moon",
+        frames: &["🌑", "🌒", "🌓", "🌔", "🌕", "🌖", "🌗", "🌘"],
+    };
+
+    /// See-no-evil monkey.
+    pub const MONKEY: Self = Self {
+        name: "monkey",
+        frames: &["🙈", "🙉", "🙊"],
+    };
+
+    /// Arc spinner.
+    pub const ARC: Self = Self {
+        name: "arc",
+        frames: &["◜", "◠", "◝", "◞", "◡", "◟"],
+    };
+
+    /// Thick braille dot spinner.
+    pub const DOTS: Self = Self {
+        name: "dots",
+        frames: &["⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷"],
+    };
+
+    /// Asterisk spinner (previously STAR).
+    pub const ASTERISK: Self = Self {
+        name: "asterisk",
+        frames: &["·", "✻", "✽", "✶", "✳", "✢"],
+    };
+
+    /// Wandering dot spinner (dotOrbit).
+    pub const DOT_ORBIT: Self = Self {
+        name: "dotOrbit",
+        frames: &[
+            "⢀⠀", "⡀⠀", "⠄⠀", "⢂⠀", "⡂⠀", "⠅⠀", "⢃⠀", "⡃⠀", "⠍⠀", "⢋⠀", "⡋⠀", "⠍⠁", "⢋⠁", "⡋⠁", "⠍⠉", "⠋⠉", "⠋⠉", "⠉⠙", "⠉⠙", "⠉⠩", "⠈⢙", "⠈⡙", "⢈⠩", "⡀⢙", "⠄⡙", "⢂⠩", "⡂⢘", "⠅⡘", "⢃⠨", "⡃⢐", "⠍⡐", "⢋⠠", "⡋⢀", "⠍⡁", "⢋⠁", "⡋⠁", "⠍⠉", "⠋⠉", "⠋⠉", "⠉⠙", "⠉⠙", "⠉⠩", "⠈⢙", "⠈⡙", "⠈⠩", "⠀⢙", "⠀⡙", "⠀⠩", "⠀⢘", "⠀⡘", "⠀⠨", "⠀⢐", "⠀⡐", "⠀⠠", "⠀⢀", "⠀⡀"
+        ],
+    };
+
+    /// Clock spinner.
+    pub const CLOCK: Self = Self {
+        name: "clock",
+        frames: &[
+            "🕛 ", "🕐 ", "🕑 ", "🕒 ", "🕓 ", "🕔 ",
+            "🕕 ", "🕖 ", "🕗 ", "🕘 ", "🕙 ", "🕚 ",
+        ],
+    };
+
+    /// Box trace spinner (boxTrace).
+    pub const BOX_TRACE: Self = Self {
+        name: "boxTrace",
+        frames: &[
+            "⠉⠉", "⠈⠙", "⠀⠹", "⠀⢸", "⠀⣰", "⢀⣠", "⣀⣀", "⣄⡀", "⣆⠀", "⡇⠀", "⠏⠀", "⠋⠁"
+        ],
+    };
+
+    /// Dots circle spinner.
+    pub const DOTS_CIRCLE: Self = Self {
+        name: "dotsCircle",
+        frames: &["⢎ ", "⠎⠁", "⠊⠑", "⠈⠱", " ⡱", "⢀⡰", "⢄⡠", "⢆⡀"],
+    };
+
+    /// Sand spinner.
+    pub const SAND: Self = Self {
+        name: "sand",
+        frames: &[
+            "⠁", "⠂", "⠄", "⡀", "⡈", "⡐", "⡠", "⣀", "⣁", "⣂", "⣄", "⣌", "⣔", "⣤", "⣥", "⣦", "⣮",
+            "⣶", "⣷", "⣿", "⡿", "⠿", "⢟", "⠟", "⡛", "⠛", "⠫", "⢋", "⠋", "⠍", "⡉", "⠉", "⠑", "⠡", "⢁"
+        ],
+    };
+
+    /// Star spinner.
+    pub const STAR: Self = Self {
+        name: "star",
+        frames: &["✶", "✸", "✹", "✺", "✹", "✷"],
+    };
+
+    /// Circle spinner.
+    pub const CIRCLE: Self = Self {
+        name: "circle",
+        frames: &["◡", "⊙", "◠"],
+    };
+
+    /// Square corners spinner.
+    pub const SQUARE_CORNERS: Self = Self {
+        name: "squareCorners",
+        frames: &["◰", "◳", "◲", "◱"],
     };
 
     /// Creates a custom frame set.
@@ -59,7 +189,7 @@ impl SpinnerFrames {
 
 impl Default for SpinnerFrames {
     fn default() -> Self {
-        Self::DOTS
+        Self::MINIDOT
     }
 }
 
