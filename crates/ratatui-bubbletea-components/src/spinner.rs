@@ -351,6 +351,19 @@ mod tests {
     }
 
     #[test]
+    fn built_in_frame_sets_keep_compatibility_names() {
+        assert_eq!(SpinnerFrames::default().name(), "dots");
+        assert_eq!(SpinnerFrames::DOTS.name(), "dots");
+        assert_eq!(SpinnerFrames::DOTS.frames()[0], "⠋");
+        assert_eq!(
+            SpinnerFrames::MINIDOT.frames(),
+            SpinnerFrames::DOTS.frames()
+        );
+        assert_eq!(SpinnerFrames::DOTS_THICK.name(), "dotsThick");
+        assert_eq!(SpinnerFrames::DOTS_THICK.frames()[0], "⣾");
+    }
+
+    #[test]
     fn spinner_cycles_through_frames() {
         let mut spinner = Spinner::new().frames(SpinnerFrames::LINE);
 
