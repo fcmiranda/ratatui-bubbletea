@@ -223,8 +223,8 @@ impl Showcase {
                 .label("ASCII line spinner")
         } else {
             Spinner::new()
-                .frames(SpinnerFrames::MINIDOT)
-                .label("Minidots (classic)")
+                .frames(SpinnerFrames::DOTS)
+                .label("Charm-style spinner")
         };
     }
 

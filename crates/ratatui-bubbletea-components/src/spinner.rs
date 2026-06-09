@@ -13,9 +13,15 @@ pub struct SpinnerFrames {
 
 impl SpinnerFrames {
     /// Braille dot spinner, close to the classic Charm default.
+    pub const DOTS: Self = Self {
+        name: "dots",
+        frames: &["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
+    };
+
+    /// Alias for the classic mini-dot spinner.
     pub const MINIDOT: Self = Self {
         name: "minidot",
-        frames: &["⠋", "⠙", "⠹", "⠸", "⠼", "⠴", "⠦", "⠧", "⠇", "⠏"],
+        frames: Self::DOTS.frames,
     };
 
     /// Simple ASCII line spinner for conservative terminals.
@@ -85,8 +91,8 @@ impl SpinnerFrames {
     };
 
     /// Thick braille dot spinner.
-    pub const DOTS: Self = Self {
-        name: "dots",
+    pub const DOTS_THICK: Self = Self {
+        name: "dotsThick",
         frames: &["⣾", "⣽", "⣻", "⢿", "⡿", "⣟", "⣯", "⣷"],
     };
 
@@ -192,7 +198,7 @@ impl SpinnerFrames {
 
 impl Default for SpinnerFrames {
     fn default() -> Self {
-        Self::MINIDOT
+        Self::DOTS
     }
 }
 

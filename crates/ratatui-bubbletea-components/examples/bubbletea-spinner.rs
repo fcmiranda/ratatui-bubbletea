@@ -37,6 +37,9 @@ fn main() -> Result<(), Box<dyn std::error::Error>> {
             .frames(SpinnerFrames::MINIDOT)
             .label("MiniDot"),
         Spinner::new().frames(SpinnerFrames::DOTS).label("Dots"),
+        Spinner::new()
+            .frames(SpinnerFrames::DOTS_THICK)
+            .label("Thick Dots"),
         Spinner::new().frames(SpinnerFrames::LINE).label("Line"),
         Spinner::new().frames(SpinnerFrames::JUMP).label("Jump"),
         Spinner::new().frames(SpinnerFrames::PULSE).label("Pulse"),
